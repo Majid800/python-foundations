@@ -1,5 +1,6 @@
 
 from books_data import library 
+from validations import get_non_empty_input, get_menu_choice
 
 def search_menu():
     print("\n --- Search Book ---")
@@ -7,15 +8,13 @@ def search_menu():
     print("2. Search by Author")
     print("3. Search by Genre")
 
-def get_choice():
-    choice = int(input("Select Option (1/2/3): "))
-    return choice 
+
 
 def search_book():
     search_menu()
-    choice = get_choice()
+    choice = get_menu_choice("Please Select choice (1/2/3): ")
     if choice ==1:
-        title = input("Enter Book Title: ")
+        title = get_non_empty_input("Enter Book Title: ")
         if title in library:
             print("\n --- Book Details ---")
             info = library[title]
@@ -29,7 +28,7 @@ def search_book():
         else:
             print("Book does not exist!")
     elif choice == 2:
-        author = input("Enter Author Details: ")
+        author = get_non_empty_input("Enter Author: ")
         print("\n --- Book Details ---")
         found = False
         for title, info in library.items():
@@ -45,7 +44,7 @@ def search_book():
         if not found:
             print("Book does not exist")
     elif choice == 3:
-        genre = input("Enter Genre: ")
+        genre = get_non_empty_input("Enter Genre: ")
         found = False
         for title, info in library.items():
             if genre == info["genre"]:

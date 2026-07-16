@@ -1,10 +1,12 @@
 #Library 
 from books_data import library 
+from validations import get_int_value, get_non_empty_input 
+
 def add_book():
-    title = input("Enter Book Title: ").strip()
-    author = input("Enter Book Author: ").strip()
-    genre = input("Enter Book Genre: ").strip()
-    year = int(input("Enter Book Year: "))
+    title = get_non_empty_input("Enter Book Title: ")
+    author = get_non_empty_input("Enter Author: ")
+    genre = get_non_empty_input("Enter Genre: ")
+    year = get_int_value("Enter Year: ")
 
     if title in library:
         print("Book Already Exists!")
@@ -34,7 +36,7 @@ def view_books():
             print("-"*20)
 
 def borrow_book():
-    title = input("Enter Book Title: ").strip()
+    title = get_non_empty_input("Enter Book Title: ")
     if title in library:
         info = library[title]
         print("\n --- Books ---")
@@ -57,7 +59,7 @@ def borrow_book():
         print("Book does not exist!")
 
 def return_book():
-    title = input("Enter Book Title: ")
+    title = get_non_empty_input("Enter Book Title: ")
     if title in library:
         info = library[title]
         print("\n --- Books ---")
@@ -79,7 +81,7 @@ def return_book():
         print("Book not found")
 
 def delete_book():
-    title = input("Enter Book Title: ")
+    title =  get_non_empty_input("Enter Book Title: ")
     if title in library:
         del library[title]
         print("Book has been deleted!")
