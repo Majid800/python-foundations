@@ -1,6 +1,6 @@
 #Library 
 from books_data import library 
-from validations import get_int_value, user_input, get_confirmation
+from validations import get_int_value, user_input, get_confirmation, display_book
 
 def add_book():
     title = user_input("Enter Book Title:  (press X to cancel)")
@@ -47,52 +47,35 @@ def borrow_book():
     title = user_input("Enter Book Title:    (press X to cancel)")
     if title is None:
         return
-    if title in library:
-        info = library[title]
-        print("\n --- Books ---")
-        print(f"Title: {title}")
-        print(f"Author: {info['author']}")
-        print(f"Genre: {info['genre']}")
-        print(f"Year: {info['year']}")
-        status = "Available" if info['available'] else "Borrowed"
-        print(f"status: {status}")
-        confirm = get_confirmation("Confirm this book (Y/N): ")
-        if confirm:
-            if info["available"]:
-                info["available"] = False
-                print("Book has been successfully borrowed!")
+    info = display_book(title)
+    if info is None:
+        return
+    confirm = get_confirmation("Confirm this book (Y/N): ")
+    if confirm:
+        if info["available"]:
+            info["available"] = False
+            print("Book has been successfully borrowed!")
                 
-            else:
-                print("Book already borrowed")
         else:
-            print("Cancelled")
+            print("Book already borrowed")
     else:
-        print("Book not found")
+            print("Cancelled")
 
 def return_book():
     title = user_input("Enter Book Title:   (press X to cancel) ")
     if title is None:
         return 
-    if title in library:
-        info = library[title]
-        print("\n --- Books ---")
-        print(f"Title: {title}")
-        print(f"Author: {info['author']}")
-        print(f"Genre: {info['genre']}")
-        print(f"Year: {info['year']}")
-        status = "Available" if info['available'] else "Borrowed"
-        print(f"status: {status}")
-        confirm = get_confirmation("Confirm this book (Y/N): ")
-        if confirm:
-            if info["available"] == True:
+    info = display_book(title)
+    confirm = get_confirmation("Confirm this book (Y/N): ")
+    if confirm:
+        if info["available"] == True:
                 print("Book has already been returned")
-            else:
-                info["available"] = True
-                print("Book has been succesfuly borrowed!")
         else:
-            print("Cancelled")
+                info["available"] = True
+                print("Book has been Returned!")
     else:
-        print("Book not found")
+        print("Cancelled")
+    
 
 def delete_book():
     title =  user_input("Enter Book Title:     (press X to cancel)")
