@@ -1,20 +1,21 @@
 #Validations 
 #Input Validations 
 
-#Title cannot be empty
-#create a While Loop that asks user for input and breaks when the input is non empty string, return the title 
-def get_non_empty_input(prompt):
+#Gets Validated text input from user.
+#Prevents empty input anf allows user to cancel by pressing x
+
+def user_input(prompt):
     while True:
         value = input(prompt).strip()
-        if not value:
-            print("Cannot be Empty")
-        else:
-            return value 
+        if not value: 
+            print("Field cannot be empty!")
+        else: 
+            if value.upper() == "X":
+                return None 
+            else:
+                return value 
 
-#Year
-#Must not be empty 
-#Must be a number
-#Must be realistic (within range)
+
  
 
 #Algorithm: ask User for year, if its empty ask again -> if its not empty -> does it contain only digits and if yes then return if not then raise ValueError
@@ -24,12 +25,15 @@ def get_int_value(prompt):
         value = input(prompt).strip()
         if not value:
             print("Field cannot be empty")
-        else: 
-            try:
-                value = int(value)
-                return value 
-            except ValueError:
-                print("Enter Numbers Only")
+        else:
+            if value.upper() == "X":
+                return None 
+            else:
+                try:
+                    value = int(value)
+                    return value 
+                except ValueError:
+                    print("Enter Numbers Only")
     
 #Function that gets positive numbers 
 # Ask user for input that cannot be empty
@@ -68,4 +72,23 @@ def get_menu_choice(prompt):
             else: 
                 return int(choice) 
             
+
+#confirmation 
+
+def get_confirmation(prompt):
+    while True:
+        value = input(prompt).strip()
+        if not value:
+            print("Field cannot be empty!")
+        else: 
+            if value.upper() == "Y":
+                return True
+            elif value.upper() =="N":
+                return False 
+            else:
+                print("Please enter Y or N ")
+            
+    
+        
+
 
