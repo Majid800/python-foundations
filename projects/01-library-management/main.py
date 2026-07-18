@@ -2,6 +2,7 @@ from library import borrow_book, return_book, view_books, add_book
 from books_data import library 
 from search_books import search_book
 from validations import get_menu_choice
+from statistics import library_statistics
 
 def user_menu():
     print("\n --- Library --- ")
@@ -10,7 +11,8 @@ def user_menu():
     print("3.Borrow Book")
     print("4.Return Book")
     print("5.Search Book")
-    print("6.Exit")
+    print("6.Library Statistics")
+    print("7.Exit")
 
 
 
@@ -19,7 +21,7 @@ def user_menu():
 def main():
     while True:
         user_menu()
-        choice = get_menu_choice("Please Select Option (1/2/3/4/5/6): ")
+        choice = get_menu_choice("Please Select Option (1/2/3/4/5/6/7): ")
         if choice ==1:
             view_books()
         elif choice == 2:
@@ -31,6 +33,8 @@ def main():
         elif choice == 5:
             search_book()
         elif choice == 6:
+            library_statistics()
+        elif choice == 7:
             print("Exiting")
             break 
 
