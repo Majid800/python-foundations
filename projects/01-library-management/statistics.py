@@ -6,6 +6,7 @@ from validations import get_menu_choice
 # single loop through the library for improved efficiency.
 
 
+
 def statistics_menu():
     print("\n --- Library Statistics ---")
     print("1.Overall Statistics")
@@ -34,9 +35,10 @@ def Overall_statistics():
     print(f"Borrowed Books: {borrowed}")
 
 
-genre_count = {}
+
 
 def books_by_genre():
+    genre_count = {}
     for title, info in library.items():
         genre = info["genre"]
         if genre in genre_count:
@@ -46,9 +48,10 @@ def books_by_genre():
         for genre, count in genre_count.items():
             print(f"{genre}: {count}")
 
-author_count = {}
+
 
 def books_by_author():
+    author_count = {}
     for title, info in library.items():
         author = info["author"]
         if author in author_count:
@@ -58,7 +61,7 @@ def books_by_author():
         for author, count in author_count.items():
             print(f"{author}: {count}")
 
-def main():
+def search_by_statistics():
     while True:
         statistics_menu()
         choice = get_menu_choice("Please Select Option (1/2/3/4):  ")
@@ -72,5 +75,4 @@ def main():
             print("Exiting...")
             break 
 
-if __name__ =="__main__":
-    main()
+    

@@ -2,7 +2,7 @@ from library import borrow_book, return_book, view_books, add_book
 from books_data import library 
 from search_books import search_book
 from validations import get_menu_choice
-from statistics import library_statistics
+from statistics import search_by_statistics
 
 def user_menu():
     print("\n --- Library --- ")
@@ -33,7 +33,7 @@ def main():
         elif choice == 5:
             search_book()
         elif choice == 6:
-            library_statistics()
+            search_by_statistics()
         elif choice == 7:
             print("Exiting")
             break 

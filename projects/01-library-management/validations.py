@@ -76,9 +76,10 @@ def get_positive_number(prompt):
 # Returns the validated menu option as an integer.
 # Repeats until a valid option is entered.
 
-VALID_OPTIONS = ["1","2","3","4","5","6","7"]
+
 
 def get_menu_choice(prompt):
+    VALID_OPTIONS = ["1","2","3","4","5","6","7"]
     while True:
         choice = input(prompt)
         if not choice:
