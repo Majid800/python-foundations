@@ -1,10 +1,18 @@
-from library import borrow_book, return_book, view_books, add_book
+from library import borrow_book, return_book, view_books, add_book, search_book
 from books_data import library 
-from search_books import search_book
 from validations import get_menu_choice
 from statistics import search_by_statistics
 
+
+
+
 def user_menu():
+    """
+    Displays the main library menu.
+
+    Presents the available library management options
+    to the user.
+    """
     print("\n --- Library --- ")
     print("1.View Books")
     print("2.Add Book")
@@ -15,10 +23,14 @@ def user_menu():
     print("7.Exit")
 
 
-
-
-
 def main():
+    """
+    Runs the main application loop.
+
+    Processes the user's menu selection and calls the
+    appropriate library management function until the
+    user chooses to exit.
+    """
     while True:
         user_menu()
         choice = get_menu_choice("Please Select Option (1/2/3/4/5/6/7): ")

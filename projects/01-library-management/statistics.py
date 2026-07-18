@@ -1,13 +1,15 @@
 from books_data import library 
 from validations import get_menu_choice
 
-# Displays a summary of the library by showing the total number of books,
-# available books, and borrowed books. Calculates all statistics in a
-# single loop through the library for improved efficiency.
-
 
 
 def statistics_menu():
+    """
+    Displays the library statistics menu.
+
+    Allows the user to choose which statistics
+    report they would like to view.
+    """
     print("\n --- Library Statistics ---")
     print("1.Overall Statistics")
     print("2.Books by Genre")
@@ -21,6 +23,12 @@ def statistics_menu():
 
 
 def Overall_statistics():
+    """
+    Displays an overview of the library.
+
+    Shows the total number of books along with
+    the available and borrowed book counts.
+    """
     total = len(library)
     available = 0
     borrowed = 0
@@ -38,6 +46,12 @@ def Overall_statistics():
 
 
 def books_by_genre():
+    """
+    Groups books by genre.
+
+    Counts and displays the total number of
+    books in each genre.
+    """
     genre_count = {}
     for title, info in library.items():
         genre = info["genre"]
@@ -51,6 +65,12 @@ def books_by_genre():
 
 
 def books_by_author():
+    """
+    Groups books by author.
+
+    Counts and displays the total number of
+    books written by each author.
+    """
     author_count = {}
     for title, info in library.items():
         author = info["author"]
@@ -62,6 +82,12 @@ def books_by_author():
             print(f"{author}: {count}")
 
 def search_by_statistics():
+    """
+    Runs the library statistics menu.
+
+    Processes the user's selection and displays
+    the requested statistics report.
+    """
     while True:
         statistics_menu()
         choice = get_menu_choice("Please Select Option (1/2/3/4):  ")

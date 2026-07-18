@@ -1,15 +1,12 @@
 from books_data import library 
 
-#Validations 
-
-# User Input Validation
-# Prompts user for text input
-# Validates that the input is not empty
-# Allows the user to cancel by pressing X (case-insensitive)
-# Returns the validated text or None if the user cancels.
-# Repeats until valid input is entered.
-
 def user_input(prompt):
+    """
+    Prompts the user for text input.
+
+    Validates that the entered value is not empty
+    and supports cancellation by returning None.
+    """
     while True:
         value = input(prompt).strip()
         if not value: 
@@ -23,15 +20,14 @@ def user_input(prompt):
 
  
 
-# Integer Input Validation
-# Prompts the user for numeric input.
-# Validates that the input is not empty.
-# Allows the user to cancel by pressing X (case-insensitive).
-# Converts the input to an integer.
-# Returns the validated integer or None if the user cancels.
-# Repeats until valid input is entered.
 
 def get_int_value(prompt):
+    """
+    Prompts the user for an integer.
+
+    Validates the entered value and supports
+    cancellation by returning None.
+    """
     while True:
         value = input(prompt).strip()
         if not value:
@@ -46,15 +42,15 @@ def get_int_value(prompt):
                 except ValueError:
                     print("Enter Numbers Only")
     
-# Positive Number Validation
-# Prompts the user for a positive integer.
-# Validates that the input is not empty.
-# Converts the input to an integer.
-# Ensures the value is greater than zero.
-# Returns the validated positive integer.
-# Repeats until valid input is entered.
+
 
 def get_positive_number(prompt):
+    """
+    Prompts the user for a positive integer.
+
+    Validates that the entered value is greater
+    than zero.
+    """
     while True:
         value = input(prompt).strip()
         if not value: 
@@ -69,16 +65,17 @@ def get_positive_number(prompt):
             except ValueError:
                 print("Must be a number")
                 
-# Menu Choice Validation
-# Prompts the user to select a menu option.
-# Validates that the input is not empty.
-# Ensures the selected option exists in the list of valid menu options.
-# Returns the validated menu option as an integer.
-# Repeats until a valid option is entered.
+
 
 
 
 def get_menu_choice(prompt):
+    """
+    Prompts the user for a menu selection.
+
+    Validates that the entered option is a
+    valid integer.
+    """
     VALID_OPTIONS = ["1","2","3","4","5","6","7"]
     while True:
         choice = input(prompt)
@@ -91,15 +88,14 @@ def get_menu_choice(prompt):
                 return int(choice) 
             
 
-#confirmation validation
-#Prompts user for confirmation and validates the response.
-#Accepts only 'Y' or 'N' (case-insensitive)
-#Returns:
-#True - if the user confirms
-#False - if the user declines
-#Repeats until a valid response is entered
 
 def get_confirmation(prompt):
+    """
+    Prompts the user for confirmation.
+
+    Returns True for a confirmed action or
+    False if the action is declined.
+    """
     while True:
         value = input(prompt).strip()
         if not value:
@@ -112,26 +108,7 @@ def get_confirmation(prompt):
             else:
                 print("Please enter Y or N ")
             
-    
-# Display Book
-# Searches the library for the specified book title.
-# Displays the book's details, including its availability status.
-# Returns the book's information dictionary if the book exists.
-# Returns None if the book cannot be found.
 
-def display_book(title):
-    if title in library:
-        info = library[title]
-        print("\n --- Books ---")
-        print(f"Title: {title}")
-        print(f"Author: {info['author']}")
-        print(f"Genre: {info['genre']}")
-        print(f"Year: {info['year']}")
-        status = "Available" if info['available'] else "Borrowed"
-        print(f"status: {status}")
-        return info 
-    else:
-        print("Book not found")
-        return None 
+
 
 
