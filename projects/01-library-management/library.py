@@ -1,6 +1,6 @@
 #Library 
 from books_data import library 
-from validations import get_int_value, user_input, get_confirmation, display_book
+from validations import get_int_value, user_input, get_confirmation, display_book, get_menu_choice
 
 def add_book():
     title = user_input("Enter Book Title:  (press X to cancel)")
@@ -28,20 +28,42 @@ def add_book():
         print("Book Added Succesfully!")
 
 
+def view_books_menu():
+    print("\n --- View Books ---")
+    print("1.View all books")
+    print("2.View Available Books")
+    print("3.View Borrowed Books")
+    print("4.Exit")
 
 def view_books():
-    if not library:
-        print("no books found")
-    else:
-        print("\n ---- Books ----")
-        for title, info in library.items():
-            print(f"Title: {title}")
-            print(f"Author: {info['author']}")
-            print(f"Genre: {info['genre']}")
-            print(f"Year: {info['year']}")
-            status = "Available" if info['available'] else "Borrowed"
-            print(f"status: {status}")
-            print("-"*20)
+    while True:
+        view_books_menu()
+        choice = get_menu_choice("Please Select Option (1/2/3/4): ")
+        if choice ==1:
+            print("\n ---- Books ----")
+            for title, info in library.items():
+                print(f"Title: {title}")
+                print(f"Author: {info['author']}")
+                print(f"Genre: {info['genre']}")
+                print(f"Year: {info['year']}")
+                status = "Available" if info['available'] else "Borrowed"
+                print(f"status: {status}")
+                print("-"*20)
+        elif choice == 2:
+            print("\n --- Available Books ---")
+            for title,info in library.items():
+                if info['available']:
+                    print(title)
+        elif choice ==3:
+            print("\n --- Borrowed Books ---")
+            for title,info in library.items():
+                if not info['available']:
+                    print(title)
+        elif choice == 4:
+            print("exiting...")
+            break 
+
+
 
 def borrow_book():
     title = user_input("Enter Book Title:    (press X to cancel)")
@@ -89,4 +111,4 @@ def delete_book():
 
 
 if __name__ == "__main__":
-    borrow_book()
+    view_books()
