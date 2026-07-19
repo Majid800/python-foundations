@@ -1,5 +1,6 @@
 #Library 
 from validations import get_int_value, user_input, get_confirmation, get_menu_choice
+from storage import save_library
 
 """
 Library Management Module
@@ -65,6 +66,7 @@ def add_book(library):
             "year": year,
             "available": True
             }
+        save_library(library)
         print("Book Added Succesfully!")
         
 
@@ -196,6 +198,7 @@ def borrow_book(library):
     if confirm:
         if info["available"]:
             info["available"] = False
+            save_library(library)
             print("Book has been successfully borrowed!")
                 
         else:
@@ -222,6 +225,7 @@ def return_book(library):
                 print("Book has already been returned")
         else:
                 info["available"] = True
+                save_library(library)
                 print("Book has been Returned!")
     else:
         print("Cancelled")
@@ -239,6 +243,7 @@ def delete_book(library):
     if title in library:
         del library[title]
         print("Book has been deleted!")
+        save_library(library)
     else: 
         print("Book does not exist!")
 
