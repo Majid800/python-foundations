@@ -91,7 +91,7 @@ def books_by_author(library):
         for author, count in author_count.items():
             print(f"{author}: {count}")
 
-def search_by_statistics():
+def search_by_statistics(library):
     """
     Runs the library statistics menu.
 
@@ -102,11 +102,11 @@ def search_by_statistics():
         statistics_menu()
         choice = get_menu_choice("Please Select Option (1/2/3/4):  ")
         if choice == 1:
-            Overall_statistics()
+            Overall_statistics(library)
         elif choice == 2:
-            books_by_genre()
+            books_by_genre(library)
         elif choice == 3:
-            books_by_author()
+            books_by_author(library)
         elif choice == 4:
             print("Exiting...")
             break 
