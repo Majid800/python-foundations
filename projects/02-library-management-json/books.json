@@ -1,0 +1,55 @@
+{
+    "The Hobbit": {
+        "author": "J.R.R. Tolkien",
+        "genre": "Fantasy",
+        "year": 1937,
+        "available": true
+    },
+    "1984": {
+        "author": "George Orwell",
+        "genre": "Dystopian",
+        "year": 1949,
+        "available": true
+    },
+    "To Kill a Mockingbird": {
+        "author": "Harper Lee",
+        "genre": "Classic",
+        "year": 1960,
+        "available": true
+    },
+    "The Great Gatsby": {
+        "author": "F. Scott Fitzgerald",
+        "genre": "Classic",
+        "year": 1925,
+        "available": true
+    },
+    "Harry Potter and the Philosopher's Stone": {
+        "author": "J.K. Rowling",
+        "genre": "Fantasy",
+        "year": 1997,
+        "available": true
+    },
+    "The Catcher in the Rye": {
+        "author": "J.D. Salinger",
+        "genre": "Classic",
+        "year": 1951,
+        "available": true
+    },
+    "The Da Vinci Code": {
+        "author": "Dan Brown",
+        "genre": "Thriller",
+        "year": 2003,
+        "available": true
+    },
+    "The Alchemist": {
+        "author": "Paulo Coelho",
+        "genre": "Adventure",
+        "year": 1988,
+        "available": true
+    },
+    "The Hunger Games": {
+        "author": "Suzanne Collins",
+        "genre": "Science Fiction",
+        "year": 2008,
+        "available": true
+    }}
