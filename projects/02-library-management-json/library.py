@@ -1,6 +1,6 @@
 #Library 
 from validations import get_int_value, user_input, get_confirmation, get_menu_choice
-from storage import connect_database 
+from storage import save_library
 
 """
 Library Management Module
@@ -16,7 +16,7 @@ and extend.
 """
 
 #HELPER FUNCTIONS
-def display_book(title,author,genre,year,available):
+def display_book(title,info):
     """
     Displays the details of the specified book.
 
@@ -25,10 +25,10 @@ def display_book(title,author,genre,year,available):
     Returns None if the book does not exist.
     """
     print(f"\nTitle: {title}")
-    print(f"Author: {author}")
-    print(f"Genre: {genre}")
-    print(f"Year: {year}")
-    status = "Available" if available else "Borrowed"
+    print(f"Author: {info['author']}")
+    print(f"Genre: {info['genre']}")
+    print(f"Year: {info['year']}")
+    status = "Available" if info['available'] else "Borrowed"
     print(f"status: {status}")
      
     
@@ -149,62 +149,33 @@ def view_books_menu():
     print("3.View Borrowed Books")
     print("4.Exit")
 
+def view_books(library):
+    """
+    Displays books from the library.
 
-def view_all_books():
-    connection = connect_database()
-    cursor = connection.cursor()
-    cursor.execute(
-        "SELECT * FROM books;"
-    )
-    books = cursor.fetchall()
-    print("\n--- All Books ---")
-    for id, title, author, genre, year, available in books:
-        display_book(title,author,genre,year,available)
-
-    cursor.close()
-    connection.close()
-
-def view_available_books():
-    connection = connect_database()
-    cursor = connection.cursor()
-    cursor.execute(
-        "SELECT * FROM books " \
-        "WHERE available = True"
-    )
-    books = cursor.fetchall()
-    for id, title, author, genre, year, available in books:
-        display_book(title,author,genre,year,available)
-    
-    cursor.close()
-    connection.close()
-
-def view_borrowed_books():
-    connection = connect_database()
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM books " \
-    "WHERE available = False")
-    books = cursor.fetchall()
-    for id, title, author, genre, year, available in books:
-        display_book(title,author,genre,year,available)
-    
-    cursor.close()
-    connection.close()
-
-
-def view_books():
+    Supports viewing all books, available books,
+    or borrowed books based on the selected filter.
+    """
     while True:
         view_books_menu()
         choice = get_menu_choice("Please Select Option (1/2/3/4): ")
-        if choice == 1:
-            view_all_books()
+        if choice ==1:
+            print("\n ---- Books ----")
+            for title, info in library.items():
+                display_book(title,info)
         elif choice == 2:
-            view_available_books()
-        elif choice == 3:
-            view_borrowed_books()
+            print("\n --- Available Books ---")
+            for title,info in library.items():
+                if info['available']:
+                    print(title)
+        elif choice ==3:
+            print("\n --- Borrowed Books ---")
+            for title,info in library.items():
+                if not info['available']:
+                    print(title)
         elif choice == 4:
             print("exiting...")
-            break
-
+            break 
 
 
 
@@ -277,3 +248,5 @@ def delete_book(library):
         print("Book does not exist!")
 
 
+if __name__ == "__main__":
+   search_book()

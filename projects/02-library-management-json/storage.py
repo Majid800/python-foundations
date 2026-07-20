@@ -18,12 +18,15 @@ def load_library():
     """
     Loads the library data from the JSON file.
 
-    Opens books.json, converts the JSON data into a Python dictionary,
-    and returns it for use throughout the application.
+    Reads the contents of 'books.json' and converts the JSON
+    data into a Python dictionary.
 
-    If the JSON file is missing or contains invalid JSON, an empty
-    dictionary is returned so the application can continue running
-    without crashing.
+    If the file does not exist or contains invalid JSON,
+    an empty library is returned and a message is displayed
+    to the user.
+
+    Returns:
+        dict: A dictionary containing all books in the library.
     """
     try:
         with open("books.json") as file:
@@ -43,13 +46,15 @@ def save_library(library):
     """
     Saves the library data to the JSON file.
 
-    Converts the current library dictionary into JSON format and
-    writes it to books.json, preserving any additions, deletions,
-    or updates made during the program.
+    Converts the Python dictionary into JSON format and
+    writes it to 'books.json'. Existing file contents are
+    overwritten with the updated library data.
 
-    Formats the JSON using indentation for improved readability and
-    preserves non-ASCII characters when saving.
+    The JSON file is formatted with indentation for readability
+    and preserves non-ASCII characters.
+
+    Args:
+        library (dict): The library dictionary to be saved.
     """
-
     with open("books.json", "W") as file:
         json.dump(library, file, indent=4, ensure_ascii=False)
