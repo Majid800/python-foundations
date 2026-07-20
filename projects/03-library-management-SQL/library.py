@@ -1,6 +1,6 @@
 #Library 
 from validations import get_int_value, user_input, get_confirmation, get_menu_choice
-from storage import save_library
+from storage import connect_database
 
 """
 Library Management Module
@@ -14,9 +14,7 @@ business logic from its data storage, allowing the same functions to
 work with data loaded from JSON and making the code easier to maintain
 and extend.
 """
-
-#HELPER FUNCTIONS
-def display_book(title,info):
+def display_book(title,author,genre, year, available):
     """
     Displays the details of the specified book.
 
@@ -25,51 +23,11 @@ def display_book(title,info):
     Returns None if the book does not exist.
     """
     print(f"\nTitle: {title}")
-    print(f"Author: {info['author']}")
-    print(f"Genre: {info['genre']}")
-    print(f"Year: {info['year']}")
-    status = "Available" if info['available'] else "Borrowed"
+    print(f"Author: {author}")
+    print(f"Genre: {genre}")
+    print(f"Year: {year}")
+    status = "Available" if available else "Borrowed"
     print(f"status: {status}")
-     
-    
-
-        
-
-
-#MAIN FUNCTIONS 
-def add_book(library):
-    """
-    Adds a new book to the library.
-
-    Collects and validates user input before storing the
-    book's details with an available status.
-    """   
-    title = user_input("Enter Book Title:  (press X to cancel)")
-    if title is None:
-        return  
-    author = user_input("Enter Author:  (press X to cancel)")
-    if author is None:
-        return
-    genre = user_input("Enter Genre:  (press X to cancel)")
-    if genre is None:
-        return
-    year = get_int_value("Enter Year: ")
-    if year is None:
-        return 
-
-    if title in library:
-        print("Book Already Exists!")
-    else:
-        library[title] = {
-            "author": author,
-            "genre": genre,
-            "year": year,
-            "available": True
-            }
-        save_library(library)
-        print("Book Added Succesfully!")
-        
-
 
 
 def search_menu():
@@ -85,97 +43,168 @@ def search_menu():
     print("3.Search by Genre")
     print("4.exit")
 
+def search_by_title():
+    title = user_input("Enter Book Title (press x to cancel): ")
+    if title is None:
+        return
+    connection = connect_database()
+    cursor = connection.cursor()
+    cursor.execute("" \
+    "SELECT * FROM books WHERE title ILIKE %s",
+    (title,))
+    book = cursor.fetchone()
+    if book is None:
+        print("Book Not Found")
+    else:
+        id, title, author, genre, year, available = book
+        display_book(title,author,genre,year,available)
 
-def search_book(library):
-    """
-    Searches the library for books.
 
-    Supports searching by title, author, or genre
-    and displays any matching results.
-    """
+    cursor.close()
+    connection.close()
+
+def search_by_author():
+    author = user_input("Enter author name (press x to cancel): ")
+    if author is None:
+        return 
+    connection = connect_database()
+    cursor = connection.cursor()
+    cursor.execute(
+        "SELECT * FROM books WHERE author ILIKE %s",
+        (author,))
+    books = cursor.fetchall()
+    if books is None:
+        print("Book not found")
+    else:
+        for id, title, author, genre, year, available in books:
+            display_book(title, author, genre, year, available)
+
+def search_by_genre():
+    genre = user_input("Enter genre (press x to cancel): ")
+    if genre is None:
+        return 
+    connection = connect_database()
+    cursor = connection.cursor()
+    cursor.execute(
+        "SELECT * FROM books WHERE genre ILIKE %s",
+        (genre,))
+    books = cursor.fetchall()
+    if books is None:
+        print("Book not found")
+    else:
+        print(f"\n --- {genre} ---")
+        for id, title, author, genre, year, available in books:
+            display_book(title, author, genre, year, available)
+
+def search_book():
     while True:
         search_menu()
-        choice = get_menu_choice("Please Select choice (1/2/3/4): ")
-        if choice ==1:
-            title = user_input("Enter Book Title:   (press X to cancel)")
-            if title is None:
-                return
-            if title in library:
-                info = library[title]
-                print("\n --- Books ---")
-                display_book(title,info)
-            else:
-                print("Book does not exist!")
+        choice = get_menu_choice("Select Option (1/2/3/4): ")
+        if choice == 1:
+            search_by_title()
         elif choice == 2:
-            author = user_input("Enter Author (press X to cancel): ")
-            if author is None:
-                return
-            found = False
-            print("\n --- Books ---")
-            for title, info in library.items():
-                if author == info["author"]:
-                    found = True
-                    display_book(title,info)
-            if not found:
-                print("Book does not exist")
+            search_by_author()
         elif choice == 3:
-            genre = user_input("Enter Genre (press X to cancel):")
-            if genre is None:
-                return 
-            found = False
-            print("\n --- Books ---")
-            for title, info in library.items():
-                if genre == info["genre"]:
-                    found = True
-                    display_book(title,info)
-            if not found:
-                print("Books does not exist!")
-        elif choice ==4:
+            search_by_genre()
+        elif choice == 4:
             print("Exiting...")
-            break
-
-
+            break 
 
 def view_books_menu():
-    """
-    Displays the view books menu.
-
-    Allows the user to choose how they would like
-    to view the library collection.
-    """
     print("\n --- View Books ---")
     print("1.View all books")
     print("2.View Available Books")
     print("3.View Borrowed Books")
     print("4.Exit")
 
-def view_books(library):
-    """
-    Displays books from the library.
+def view_all_books():
+    connection = connect_database()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM books")
+    books = cursor.fetchall()
+    print("--- All Books ---")
+    for id, title, author, genre, year, available in books:
+        display_book(title, author, genre, year, available)
+    
+    cursor.close()
+    connection.close()
 
-    Supports viewing all books, available books,
-    or borrowed books based on the selected filter.
-    """
+def view_available_books():
+    connection = connect_database()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM  books WHERE available = True")
+    books = cursor.fetchall()
+    print("\n --- Available Books ---")
+    for id, title, author, genre, year, available in books:
+        display_book(title, author, genre, year, available)
+
+        cursor.close()
+        connection.close()
+
+def view_borrowed_books():
+    connection = connect_database()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM books WHERE available = False")
+    books = cursor.fetchall()
+    print("\n --- Borrowed Books ---")
+    for id, title, author, genre, year, available in books:
+        display_book(title, author, genre, year, available)
+
+        cursor.close()
+        connection.close()
+
+def view_books():
     while True:
         view_books_menu()
         choice = get_menu_choice("Please Select Option (1/2/3/4): ")
-        if choice ==1:
-            print("\n ---- Books ----")
-            for title, info in library.items():
-                display_book(title,info)
-        elif choice == 2:
-            print("\n --- Available Books ---")
-            for title,info in library.items():
-                if info['available']:
-                    print(title)
-        elif choice ==3:
-            print("\n --- Borrowed Books ---")
-            for title,info in library.items():
-                if not info['available']:
-                    print(title)
+        if choice == 1:
+            view_all_books()
+        elif choice ==2:
+            view_available_books()
+        elif choice == 3:
+            view_borrowed_books()
         elif choice == 4:
-            print("exiting...")
+            print("Exiting...")
             break 
+
+def add_book():
+    title = user_input("Enter Book Title:  (press X to cancel)")
+    if title is None:
+        return  
+    author = user_input("Enter Author:  (press X to cancel)")
+    if author is None:
+        return
+    genre = user_input("Enter Genre:  (press X to cancel)")
+    if genre is None:
+        return
+    year = get_int_value("Enter Year: ")
+    if year is None:
+        return 
+    
+    connection = connect_database()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM books" \
+    " WHERE title ILIKE %s" \
+    " AND author ILIKE %s",
+     (title, author))
+    book = cursor.fetchone()
+    if book:
+        print("Book already exists!")
+        cursor.close()
+        connection.close()
+        return
+    
+    
+    cursor.execute("INSERT INTO books " \
+        " (title, author, genre, year, available)" \
+        " VALUES" \
+        " (%s, %s, %s, %s, %s)",
+         (title, author, genre, year, True))
+    connection.commit()
+    print("Book has been successfully added!")
+    
+    cursor.close()
+    connection.close()
 
 
 
@@ -198,7 +227,6 @@ def borrow_book(library):
     if confirm:
         if info["available"]:
             info["available"] = False
-            save_library(library)
             print("Book has been successfully borrowed!")
                 
         else:
@@ -225,7 +253,7 @@ def return_book(library):
                 print("Book has already been returned")
         else:
                 info["available"] = True
-                save_library(library)
+                
                 print("Book has been Returned!")
     else:
         print("Cancelled")
@@ -243,7 +271,7 @@ def delete_book(library):
     if title in library:
         del library[title]
         print("Book has been deleted!")
-        save_library(library)
+    
     else: 
         print("Book does not exist!")
 
