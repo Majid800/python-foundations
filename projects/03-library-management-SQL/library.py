@@ -208,72 +208,121 @@ def add_book():
 
 
 
-def borrow_book(library):
-    """
-    Borrows a book from the library.
-
-    Displays the selected book, confirms the user's
-    choice, and updates its availability status.
-    """
-    title_input = user_input("Enter Book Title:    (press X to cancel)")
-    if title_input is None:
-        return
-    for title, info in library.items():
-        if title_input == title:
-             display_book(title,info)
-    if info is None:
-        return
-    confirm = get_confirmation("Confirm this book (Y/N): ")
-    if confirm:
-        if info["available"]:
-            info["available"] = False
-            print("Book has been successfully borrowed!")
-                
-        else:
-            print("Book already borrowed")
-    else:
-            print("Cancelled")
-
-def return_book(library):
-    """
-    Returns a borrowed book to the library.
-
-    Displays the selected book, confirms the user's
-    choice, and updates its availability status.
-    """
-    input_title = user_input("Enter Book Title:   (press X to cancel) ")
-    if input_title is None:
-        return
-    for title, info in library.items():
-         if input_title == title:
-              display_book(title,info)
-    confirm = get_confirmation("Confirm this book (Y/N): ")
-    if confirm:
-        if info["available"] == True:
-                print("Book has already been returned")
-        else:
-                info["available"] = True
-                
-                print("Book has been Returned!")
-    else:
-        print("Cancelled")
-
-
-def delete_book(library):
-    """
-    Deletes a book from the library.
-
-    Removes the selected book if it exists.
-    """
-    title =  user_input("Enter Book Title:     (press X to cancel)")
+def borrow_book():
+    title = user_input("Enter Book Title:    (press X to cancel)")
     if title is None:
         return
-    if title in library:
-        del library[title]
-        print("Book has been deleted!")
     
-    else: 
+    connection = connect_database()
+    cursor = connection.cursor()
+    
+    cursor.execute("SELECT * FROM books" \
+    " WHERE title ILIKE %s", 
+     (title,))
+    book = cursor.fetchone()
+    if book is None:
+        print("book does not exist!")
+        return 
+    id, title, author, genre, year, available = book
+    if not available:
+        print("Book Already Borrowed")
+
+        cursor.close()
+        connection.close()
+        return 
+    
+    display_book(title, author, genre, year, available)
+    confirm = get_confirmation("Confirm this book (Y/N): ")
+    if not confirm:
+        print("Borrow Cancelled!")
+        cursor.close()
+        connection.close()
+        return 
+    
+    cursor.execute("UPDATE books SET available = False" \
+    " WHERE id = %s",
+     (id, ))
+    connection.commit()
+    print("Book Borrowed Successfully!")
+    
+def return_book():
+    title = user_input("Enter Book Title:    (press X to cancel)")
+    if title is None:
+        return
+    
+    connection = connect_database()
+    cursor = connection.cursor()
+    
+    cursor.execute("SELECT * FROM books " \
+    " WHERE title ILIKE %s",
+     (title,))
+    book = cursor.fetchone()
+    if book is None:
         print("Book does not exist!")
+        cursor.close()
+        connection.close()
+        return
+    
+    
+    id, title, author, genre, year, available = book
+    if available:
+        print("Book has already been returned!")
+
+    display_book(title, author, genre, year, available)
+    confirm = get_confirmation("Please confirm (Y/N): ")
+    if not confirm:
+        print("Return has been cancelled")
+        cursor.close()
+        connection.close()
+        return
+    
+    cursor.execute("UPDATE books" \
+    " SET available = True" \
+    " WHERE id = %s ",
+     (id,))
+
+    connection.commit()
+    print("Book has been returned successfully!")
+
+    cursor.close()
+    connection.close()
+    return 
+
+
+def delete_book():
+    title = input("Enter Title (press X to cancel): ")
+    if title is None:
+        return 
+    
+    connection = connect_database()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM books" \
+    " WHERE title ILIKE %s",
+     (title,))
+    book = cursor.fetchone()
+    if book is None:
+        print("Book does not exist!")
+        return 
+    
+    id, title, author, genre, year, available = book
+    display_book(title, author, genre, year, available)
+    confirm = get_confirmation("Please Confirm (Y/N): ")
+    if not confirm:
+        print("Cancelling...")
+        cursor.close()
+        connection.close()
+        return 
+    
+    cursor.execute("DELETE FROM books" \
+    " WHERE id = %s",
+     (id,))
+    
+    connection.commit()
+    print("Book has been successfully deleted!")
+
+    cursor.close()
+    connection.close()
 
 
 if __name__ == "__main__":

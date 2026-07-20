@@ -1,5 +1,4 @@
 from library import borrow_book, return_book, view_books, add_book, search_book
-from storage import load_library
 from validations import get_menu_choice
 from statistics import search_by_statistics
 
@@ -14,7 +13,6 @@ business logic, and data storage.
 """
 
 
-library = load_library()
 
 def user_menu():
     """
@@ -45,17 +43,17 @@ def main():
         user_menu()
         choice = get_menu_choice("Please Select Option (1/2/3/4/5/6/7): ")
         if choice ==1:
-            view_books(library)
+            view_books()
         elif choice == 2:
-            add_book(library)
+            add_book()
         elif choice == 3:
-            borrow_book(library)
+            borrow_book()
         elif choice == 4:
-            return_book(library)
+            return_book()
         elif choice == 5:
-            search_book(library)
+            search_book()
         elif choice == 6:
-            search_by_statistics(library)
+            search_by_statistics()
         elif choice == 7:
             print("Exiting")
             break 
