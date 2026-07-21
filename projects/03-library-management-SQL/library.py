@@ -5,22 +5,35 @@ from storage import connect_database
 """
 Library Management Module
 
-Contains the core library management functions including adding,
-viewing, searching, borrowing, returning, and deleting books.
+Contains the core business logic for the Library Management
+System.
 
-The library dictionary is passed as a parameter to each function
-rather than being imported directly. This separates the application's
-business logic from its data storage, allowing the same functions to
-work with data loaded from JSON and making the code easier to maintain
-and extend.
+Provides functionality for viewing, searching, adding,
+borrowing, returning and deleting books stored in a
+PostgreSQL database.
+
+Responsibilities:
+- Display menus.
+- Handle user interaction.
+- Validate user input.
+- Execute SQL queries through the storage layer.
+- Display books and status messages.
 """
+
 def display_book(title,author,genre, year, available):
     """
-    Displays the details of the specified book.
+    Displays the details of a specified book.
 
-    Searches the library for the given book title, displays its
-    details if found, and returns the book's information.
-    Returns None if the book does not exist.
+    Formats and displays the information stored within a
+    Book record, including title, author, genre, publication
+    year and availability status.
+
+    Args:
+    title (str): Book title.
+    author (str): Book author.
+    genre (str): Book genre.
+    year (int): Publication year.
+    available (bool): Availability status.
     """
     print(f"\nTitle: {title}")
     print(f"Author: {author}")
@@ -44,6 +57,12 @@ def search_menu():
     print("4.exit")
 
 def search_by_title():
+    """
+    Searches for a book by title.
+
+    Retrieves the first matching book from the PostgreSQL
+    database and displays its details if found.
+    """
     title = user_input("Enter Book Title (press x to cancel): ")
     if title is None:
         return
@@ -64,6 +83,12 @@ def search_by_title():
     connection.close()
 
 def search_by_author():
+    """
+    Searches for books by author.
+
+    Retrieves all books written by the specified author
+    and displays the matching results.
+    """
     author = user_input("Enter author name (press x to cancel): ")
     if author is None:
         return 
@@ -80,6 +105,12 @@ def search_by_author():
             display_book(title, author, genre, year, available)
 
 def search_by_genre():
+    """
+    Searches for books by genre.
+
+    Retrieves all books matching the specified genre and
+    displays the matching results.
+    """
     genre = user_input("Enter genre (press x to cancel): ")
     if genre is None:
         return 
@@ -97,6 +128,13 @@ def search_by_genre():
             display_book(title, author, genre, year, available)
 
 def search_book():
+    """
+    Runs the Search Books menu.
+
+    Displays the search menu, processes the user's menu
+    selection and executes the requested search operation
+    until the user chooses to exit.
+    """
     while True:
         search_menu()
         choice = get_menu_choice("Select Option (1/2/3/4): ")
@@ -111,6 +149,12 @@ def search_book():
             break 
 
 def view_books_menu():
+    """
+    Displays the View Books menu.
+
+    Allows the user to choose whether to display all books,
+    available books or borrowed books.
+    """
     print("\n --- View Books ---")
     print("1.View all books")
     print("2.View Available Books")
@@ -118,6 +162,12 @@ def view_books_menu():
     print("4.Exit")
 
 def view_all_books():
+    """
+    Displays all books in the library.
+
+    Retrieves every book stored in the PostgreSQL database
+    and displays each record to the user.
+    """
     connection = connect_database()
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM books")
@@ -130,6 +180,12 @@ def view_all_books():
     connection.close()
 
 def view_available_books():
+    """
+    Displays all available books.
+
+    Retrieves books currently marked as available in the
+    database and displays their details.
+    """
     connection = connect_database()
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM  books WHERE available = True")
@@ -142,6 +198,12 @@ def view_available_books():
         connection.close()
 
 def view_borrowed_books():
+    """
+    Displays all borrowed books.
+
+    Retrieves books currently marked as borrowed in the
+    database and displays their details.
+    """
     connection = connect_database()
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM books WHERE available = False")
@@ -154,6 +216,13 @@ def view_borrowed_books():
         connection.close()
 
 def view_books():
+    """
+    Runs the View Books menu.
+
+    Displays the View Books menu, processes the user's
+    selection and executes the requested viewing operation
+    until the user exits the menu.
+    """
     while True:
         view_books_menu()
         choice = get_menu_choice("Please Select Option (1/2/3/4): ")
@@ -168,6 +237,14 @@ def view_books():
             break 
 
 def add_book():
+    """
+    Adds a new book to the library.
+
+    Collects book information from the user, validates the
+    input, checks for duplicate books and inserts the new
+    record into the PostgreSQL database if no duplicate
+    exists.
+    """
     title = user_input("Enter Book Title:  (press X to cancel)")
     if title is None:
         return  
@@ -209,6 +286,13 @@ def add_book():
 
 
 def borrow_book():
+    """
+    Borrows a book from the library.
+
+    Searches for the requested book, verifies that it exists
+    and is currently available, requests user confirmation
+    and updates the database to mark the book as borrowed.
+    """
     title = user_input("Enter Book Title:    (press X to cancel)")
     if title is None:
         return
@@ -246,6 +330,13 @@ def borrow_book():
     print("Book Borrowed Successfully!")
     
 def return_book():
+    """
+    Returns a borrowed book.
+
+    Searches for the requested book, verifies that it exists
+    and is currently borrowed, requests user confirmation
+    and updates the database to mark the book as available.
+    """
     title = user_input("Enter Book Title:    (press X to cancel)")
     if title is None:
         return
@@ -290,6 +381,13 @@ def return_book():
 
 
 def delete_book():
+    """
+    Deletes a book from the library.
+
+    Searches for the requested book, displays its details,
+    requests user confirmation and permanently removes the
+    book from the PostgreSQL database.
+    """
     title = input("Enter Title (press X to cancel): ")
     if title is None:
         return 

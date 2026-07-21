@@ -1,17 +1,19 @@
 from validations import get_menu_choice
+from storage import connect_database
 
 """
-Library Statistics Module
+Statistics Module
 
-Provides statistical reports for the library including overall
-book totals, books grouped by genre, and books grouped by author.
+Provides statistical reports for the Library Management
+System using SQL aggregation queries.
 
-The library dictionary is received as a parameter rather than
-being imported directly. This separates the statistics logic
-from the data storage layer, allowing the module to work with
-data loaded from JSON and making the application easier to
-maintain and extend.
+Responsibilities:
+- Display the statistics menu.
+- Generate summary reports.
+- Execute SQL aggregation queries.
+- Present statistical information to the user.
 """
+
 
 def statistics_menu():
     """
@@ -26,89 +28,90 @@ def statistics_menu():
     print("3.Books by Author")
     print("4.Exit")
 
-
-
-
-
-
-
-def Overall_statistics(library):
+def overall_statistics():
     """
-    Displays an overview of the library.
+    Displays overall library statistics.
 
-    Shows the total number of books along with
-    the available and borrowed book counts.
+    Retrieves and displays the total number of books
+    stored in the PostgreSQL database.
     """
-    total = len(library)
-    available = 0
-    borrowed = 0
-    for title, info in library.items():
-        if info['available'] == True:
-            available += 1
-        elif info['available'] == False:
-            borrowed = 0+1 
-    print("\n --- Library statistics ---")
-    print(f"Total Books: {total}")
-    print(f"Available Books: {available}")
-    print(f"Borrowed Books: {borrowed}")
+    connection = connect_database()
+    cursor = connection.cursor()
 
+    cursor.execute("SELECT COUNT(*)" \
+    " FROM books")
 
+    result = cursor.fetchone()
+    count = result[0]
 
+    print(f"Total Books: {count}")
+    cursor.close()
+    connection.close()
 
-def books_by_genre(library):
+def books_by_author():
     """
-    Groups books by genre.
+    Displays the number of books written by each author.
 
-    Counts and displays the total number of
-    books in each genre.
+    Uses SQL aggregation to group books by author and
+    display the number of books within each group.
     """
-    genre_count = {}
-    for title, info in library.items():
-        genre = info["genre"]
-        if genre in genre_count:
-            genre_count[genre] +=1
-        else:
-            genre_count[genre] = 1
-        for genre, count in genre_count.items():
-            print(f"{genre}: {count}")
+    connection = connect_database()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT author, COUNT(*)" \
+    " FROM books" \
+    " GROUP BY author" \
+    " ORDER BY author")
+
+    authors = cursor.fetchall()
+    print("\n --- Books by Authors ---\n")
+    for author, count in authors:
+        print(f"{author}: {count}")
+
+    cursor.close()
+    connection.close()
 
 
 
-def books_by_author(library):
+def books_by_genre():
     """
-    Groups books by author.
+    Displays the number of books in each genre.
 
-    Counts and displays the total number of
-    books written by each author.
+    Uses SQL aggregation to group books by genre and
+    display the number of books within each group.
     """
-    author_count = {}
-    for title, info in library.items():
-        author = info["author"]
-        if author in author_count:
-            author_count[author] +=1
-        else:
-            author_count[author] = 1
-        for author, count in author_count.items():
-            print(f"{author}: {count}")
+    connection = connect_database()
+    cursor = connection.cursor()
 
-def search_by_statistics(library):
-    """
-    Runs the library statistics menu.
+    cursor.execute("SELECT genre, COUNT(*)" \
+    " FROM books" \
+    " GROUP BY genre" \
+    " ORDER BY genre")
 
-    Processes the user's selection and displays
-    the requested statistics report.
+    genres = cursor.fetchall()
+    for genre, count in genres:
+        print(f"{genre}: {count}")
+
+    cursor.close()
+    connection.close()
+
+
+def search_by_statistics():
     """
-    while True:
+    Runs the Library Statistics menu.
+
+    Processes the user's menu selection and displays
+    the requested statistical report.
+    """
+    while True: 
         statistics_menu()
-        choice = get_menu_choice("Please Select Option (1/2/3/4):  ")
-        if choice == 1:
-            Overall_statistics(library)
-        elif choice == 2:
-            books_by_genre(library)
-        elif choice == 3:
-            books_by_author(library)
+        choice = get_menu_choice("Please Enter Option (1/2/3/4): ")
+        if choice ==1:
+            overall_statistics()
+        elif choice ==2:
+            books_by_author()
+        elif choice ==3:
+            books_by_genre()
         elif choice == 4:
             print("Exiting...")
             break 
-
-    

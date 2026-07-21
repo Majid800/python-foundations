@@ -5,11 +5,9 @@ from statistics import search_by_statistics
 """
 Main Application
 
-Loads the library data from storage, runs the main application menu,
-and passes the library dictionary to the appropriate functions.
-
-Acts as the application's controller by coordinating user interaction,
-business logic, and data storage.
+Starts the application and launches the main menu.
+This file keeps program startup separate from the rest
+of the application logic.
 """
 
 
