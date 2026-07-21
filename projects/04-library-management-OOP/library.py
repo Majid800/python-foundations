@@ -2,7 +2,7 @@
 from book import Book
 from validations import user_input, get_int_value, get_confirmation
 
-class library:
+class Library:
     def __init__(self):
         self.books = []
     
@@ -47,7 +47,7 @@ class library:
             if book.available:
                 book.display_book()
     
-    def borrowed_books(self):
+    def view_borrowed_books(self):
         print("\n--- Borrowed Books ---")
         for book in self.books():
             if not book.available:
@@ -177,9 +177,44 @@ class library:
         if not found:
                 print("Book does not exist!")
 
-        
-    
 
-    
-    
+    #Statistics Operations 
+
+    def overall_statistics(self):
+        total = len(self.books)
+        available = 0 
+        borrowed = 0 
+        for book in self.books:
+            if book.available:
+                available +=1 
+            else:
+                borrowed +=1 
+        print("\n --- Overall Statistics ---")
+        print(f"Total: {total}")
+        print(f"Available Books: {available}")
+        print(f"Borrowed Books: {borrowed}")
+        
+    def books_by_genre(self):
+        genre_count ={}
+        for book in self.books:
+            genre = book.genre
+            if genre in genre_count:
+                genre_count[genre] += 1
+            else:
+                genre_count[genre] = 1
+            for genre, count in genre_count.items():
+                print(f"{genre}: {count}")
+        
+    def books_by_author(self):
+        author_count = {}
+        for book in self.books:
+            author = book.author 
+            if author in author_count:
+                author_count[author] +=1
+            else:
+                author_count[author] = 1
+            
+            for author, count in author_count.items():
+                print(f"{author}: {count}")
+
 

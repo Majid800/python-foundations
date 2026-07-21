@@ -20,4 +20,3 @@ class Book:
 book1 = Book("Dune", "Khalid", "Fantasy", 2002)
 book2 = Book("Potter", "JQ", "Fantasy", 2005)
 
-book2.display_book()
