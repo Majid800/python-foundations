@@ -46,7 +46,7 @@ def Overall_statistics(library):
         if info['available'] == True:
             available += 1
         elif info['available'] == False:
-            borrowed = 0+1 
+            borrowed +=1  
     print("\n --- Library statistics ---")
     print(f"Total Books: {total}")
     print(f"Available Books: {available}")
