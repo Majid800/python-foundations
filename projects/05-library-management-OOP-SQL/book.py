@@ -6,12 +6,12 @@ class Book:
         self.year = year
         self.available = available                                             
         
-        def display_book(self):
-            print(f"\nTitle: {self.title}")
-            print(f"Author: {self.author}")
-            print(f"Genre: {self.genre}")
-            print(f"Year: {self.year}")
-            status = "Available" if self.available else "Borrowed"
-            print(f"status: {status}")
+    def display_book(self):
+        print(f"\nTitle: {self.title}")
+        print(f"Author: {self.author}")
+        print(f"Genre: {self.genre}")
+        print(f"Year: {self.year}")
+        status = "Available" if self.available else "Borrowed"
+        print(f"status: {status}")
 
     

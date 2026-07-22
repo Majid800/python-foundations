@@ -26,4 +26,8 @@ def connect_database():
         password = "King1978!", 
         host = "localhost",
         port = "5432")
-    return connection 
+    cursor = connection.cursor()
+
+    return connection, cursor  
+
+    
