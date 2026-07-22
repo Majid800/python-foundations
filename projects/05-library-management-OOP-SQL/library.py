@@ -5,7 +5,6 @@ from storage import connect_database
 
 
 
-
 class Library:
     def __init__(self):
         self.books = []
@@ -40,7 +39,7 @@ class Library:
             existing_book = cursor.fetchone()
             if existing_book:
                     print("Book already exists!")
-                    #
+                    
                     cursor.close()
                     connection.close()
                     return
@@ -52,7 +51,7 @@ class Library:
                 " (%s,%s,%s,%s,%s)",
                  (book.title, book.author, book.genre, book.year, book.available))
     
-                cursor.commit()
+                connection.commit()
                 print("Book has been successfully added!")
     
                 cursor.close()
@@ -87,7 +86,6 @@ class Library:
             connection.close()
             return 
              
-
     def search_by_author(self):
         author = user_input("Enter Book Author  (press X to cancel): ")
         if author is None:
@@ -143,7 +141,6 @@ class Library:
             cursor.close()
             connection.close()
             return 
-
 
     def view_all_books(self):
         connection, cursor = connect_database()
@@ -210,4 +207,211 @@ class Library:
         for id, title, author, genre, year, available in books:
             book = Book(title, author, genre, year, available)
             book.display_book()
+
+    def borrow_book(self): 
+        title = user_input("Enter Book Title (press X to cancel): ")
+        if title is None:
+            return 
+
+        author = user_input("Enter Book Author (press X to cancel): ")
+        if author is None:
+            return 
+
+        connection,cursor = connect_database()
+
+        cursor.execute("SELECT * FROM books" \
+        " WHERE title ILIKE %s "
+        " AND author ILIKE %s",
+         (title, author))
+
+        book = cursor.fetchone()
+        if not book:
+            print("Book does not exist!")
+
+            cursor.close()
+            connection.close()
+            return 
+
+        id, title, author, genre, year, available = book
+        book = Book(title, author, genre, year, available)
+        book.display_book()
+
+        confirm = get_confirmation("Confirm book (Y/N): ")
+        if not confirm:
+            print("cancelling...")
+            return 
+
+        if not book.available:
+            print("Book has already been borrowed")
+
+            cursor.close()
+            connection.close()
+            return 
+
+        cursor.execute("UPDATE books" \
+        " SET available = False" \
+        " WHERE title ILIKE %s " \
+        " AND author ILIKE %s",
+         (book.title, book.author))
+
+        connection.commit()
+        print("Book has been successfully borrowed!")
+
+        cursor.close()
+        connection.close()
+
+    def return_book(self):
+        title = user_input("Enter Book Title (press X to cancel): ")
+        if title is None:
+            return 
+        
+        author = user_input("Enter Book Author (press X to cancel): ")
+        if author is None:
+            return 
+        
+        connection,cursor = connect_database()
+        
+        cursor.execute("SELECT * FROM books" \
+        " WHERE title ILIKE %s "
+        " AND author ILIKE %s",
+         (title, author))
+        
+        book = cursor.fetchone()
+        if not book:
+            print("Book does not exist!")
+        
+            cursor.close()
+            connection.close()
+            return 
+        
+        id, title, author, genre, year, available = book
+        book = Book(title, author, genre, year, available)
+        book.display_book()
+
+        confirm = get_confirmation("Confirm book (Y/N): ")
+        if not confirm:
+            print("cancelling...")
+            return 
+
+        
+        if book.available:
+            print("Book has already been returned")
+        
+            cursor.close()
+            connection.close()
+            return 
+        
+        cursor.execute("UPDATE books" \
+        " SET available = True" \
+        " WHERE title ILIKE %s " \
+        " AND author ILIKE %s",
+         (book.title, book.author))
+        
+        connection.commit()
+        print("Book has been successfully returned!")
+        
+        cursor.close()
+        connection.close()
+
+    def delete_book(self):
+        title = user_input("Enter Book Title (press X to cancel): ")
+        if title is None:
+            return 
+                
+        author = user_input("Enter Book Author (press X to cancel): ")
+        if author is None:
+            return 
+                
+        connection,cursor = connect_database()
+                
+        cursor.execute("SELECT * FROM books" \
+        " WHERE title ILIKE %s "
+        " AND author ILIKE %s",
+         (title, author))
+                
+        book = cursor.fetchone()
+        if not book:
+            print("Book does not exist!")
+                
+            cursor.close()
+            connection.close()
+            return 
+                
+        id, title, author, genre, year, available = book
+        book = Book(title, author, genre, year, available)
+        book.display_book()
+        
+        confirm = get_confirmation("Confirm book (Y/N): ")
+        if not confirm:
+            print("cancelling...")
+
+            cursor.close()
+            connection.close()
+            return 
+        
+        cursor.execute("DELETE FROM books" \
+        " WHERE title ILIKE %s" \
+        " AND author ILIKE %s",
+         (book.title, book.author))
+
+        connection.commit()
+        print("Book has been successfully deleted")
+
+        cursor.close()
+        connection.close()
+
+    def overall_statistics(self):
+
+        connection, cursor = connect_database()
+
+        cursor.execute("SELECT COUNT(*) FROM books")
+
+        result = cursor.fetchone()
+        value= result[0]
+        print(f"Total books: {value}")
+
+        cursor.close()
+        connection.close()
+
+    def books_by_genre(self):
+
+        connection, cursor = connect_database()
+
+        cursor.execute("SELECT genre, COUNT(*)" \
+        " FROM books" \
+        " GROUP BY genre " \
+        " ORDER BY genre")
+
+        rows = cursor.fetchall()
+        print("\n --- Books by Genre ---")
+        for genre, count in rows:
+            print(f"{genre}: {count}")
+
+            cursor.close()
+            connection.close()
+
+    def books_by_author(self):
+    
+            connection, cursor = connect_database()
+    
+            cursor.execute("SELECT author, COUNT(*)" \
+            " FROM books" \
+            " GROUP BY author " \
+            " ORDER BY author")
+    
+            rows = cursor.fetchall()
+            print("\n --- Books by Authors ---")
+            for author, count in rows:
+                print(f"{author}: {count}")
+    
+                cursor.close()
+                connection.close()
+    
+
+
+
+
+
+
+
 
