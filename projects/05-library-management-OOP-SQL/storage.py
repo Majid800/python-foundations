@@ -1,15 +1,12 @@
 import psycopg 
 """
-Storage Module
+Database Connection
 
-Handles communication with the PostgreSQL database.
+This module is responsible for establishing a connection to the
+PostgreSQL database used by the Library Management System.
 
-Provides functionality for establishing database
-connections used throughout the application.
-
-Responsibilities:
-- Connect to the PostgreSQL database.
-- Return a database connection object.
+It provides a reusable function that returns both the database
+connection and cursor required to execute SQL queries.
 """
 
 def connect_database():
@@ -17,7 +14,9 @@ def connect_database():
     Creates and returns a connection to the PostgreSQL database.
 
     Uses psycopg to connect to the library_management database
-    on the local PostgreSQL server.
+    on the local PostgreSQL server. Then returns
+    both so that SQL queries can be executed by the Library
+    class.
     """
      
     connection = psycopg.connect(

@@ -17,6 +17,4 @@ class Book:
         print(f"status: {status}")
 
     
-book1 = Book("Dune", "Khalid", "Fantasy", 2002)
-book2 = Book("Potter", "JQ", "Fantasy", 2005)
 

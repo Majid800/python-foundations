@@ -57,7 +57,7 @@ def main():
         elif choice == 6:
             search_by_statistics(library)
         elif choice == 7:
-            print("Exiting")
+            print("Exiting...")
             break 
 
 

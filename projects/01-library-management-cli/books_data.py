@@ -4,8 +4,8 @@ Library Data Module
 Stores the library collection as a nested Python dictionary.
 
 Acts as the application's central data source, providing book
-information that is shared across the library management,
-search, and statistics modules.
+information that is shared across the library management
+and statistics modules.
 """
 
 

@@ -41,16 +41,16 @@ def add_book():
     Collects and validates user input before storing the
     book's details with an available status.
     """   
-    title = user_input("Enter Book Title:  (press X to cancel)")
+    title = user_input("Enter Book Title  (press X to cancel): ")
     if title is None:
         return  
-    author = user_input("Enter Author:  (press X to cancel)")
+    author = user_input("Enter Author  (press X to cancel): ")
     if author is None:
         return
-    genre = user_input("Enter Genre:  (press X to cancel)")
+    genre = user_input("Enter Genre  (press X to cancel): ")
     if genre is None:
         return
-    year = get_int_value("Enter Year: ")
+    year = get_int_value("Enter Year (press X to cancel): ")
     if year is None:
         return 
 
@@ -93,7 +93,7 @@ def search_book():
         search_menu()
         choice = get_menu_choice("Please Select choice (1/2/3/4): ")
         if choice ==1:
-            title = user_input("Enter Book Title:   (press X to cancel)")
+            title = user_input("Enter Book Title (press X to cancel): ")
             if title is None:
                 return
             if title in library:
@@ -113,7 +113,7 @@ def search_book():
                     found = True
                     display_book(title,info)
             if not found:
-                print("Book does not exist")
+                print("Book does not exist!")
         elif choice == 3:
             genre = user_input("Enter Genre (press X to cancel):")
             if genre is None:
@@ -170,7 +170,7 @@ def view_books():
                 if not info['available']:
                     print(title)
         elif choice == 4:
-            print("exiting...")
+            print("Exiting...")
             break 
 
 
@@ -182,7 +182,7 @@ def borrow_book():
     Displays the selected book, confirms the user's
     choice, and updates its availability status.
     """
-    title = user_input("Enter Book Title:    (press X to cancel)")
+    title = user_input("Enter Book Title (press X to cancel): ")
     if title is None:
         return
     info = display_book(title)
@@ -195,7 +195,7 @@ def borrow_book():
             print("Book has been successfully borrowed!")
                 
         else:
-            print("Book already borrowed")
+            print("Book already borrowed!")
     else:
             print("Cancelled")
 
@@ -206,7 +206,7 @@ def return_book():
     Displays the selected book, confirms the user's
     choice, and updates its availability status.
     """
-    title = user_input("Enter Book Title:   (press X to cancel) ")
+    title = user_input("Enter Book Title (press X to cancel): ")
     if title is None:
         return 
     info = display_book(title)
@@ -227,7 +227,7 @@ def delete_book():
 
     Removes the selected book if it exists.
     """
-    title =  user_input("Enter Book Title:     (press X to cancel)")
+    title =  user_input("Enter Book Title (press X to cancel): ")
     if title is None:
         return
     if title in library:

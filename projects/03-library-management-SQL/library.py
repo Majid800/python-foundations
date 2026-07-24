@@ -63,14 +63,17 @@ def search_by_title():
     Retrieves the first matching book from the PostgreSQL
     database and displays its details if found.
     """
-    title = user_input("Enter Book Title (press x to cancel): ")
+    title = user_input("Enter Book Title (press X to cancel): ")
     if title is None:
         return
+
     connection = connect_database()
     cursor = connection.cursor()
+
     cursor.execute("" \
     "SELECT * FROM books WHERE title ILIKE %s",
     (title,))
+
     book = cursor.fetchone()
     if book is None:
         print("Book Not Found")
@@ -89,14 +92,17 @@ def search_by_author():
     Retrieves all books written by the specified author
     and displays the matching results.
     """
-    author = user_input("Enter author name (press x to cancel): ")
+    author = user_input("Enter author name (press X to cancel): ")
     if author is None:
         return 
+
     connection = connect_database()
     cursor = connection.cursor()
+
     cursor.execute(
         "SELECT * FROM books WHERE author ILIKE %s",
         (author,))
+
     books = cursor.fetchall()
     if books is None:
         print("Book not found")
@@ -111,14 +117,17 @@ def search_by_genre():
     Retrieves all books matching the specified genre and
     displays the matching results.
     """
-    genre = user_input("Enter genre (press x to cancel): ")
+    genre = user_input("Enter genre (press X to cancel): ")
     if genre is None:
-        return 
+        return
+     
     connection = connect_database()
     cursor = connection.cursor()
+
     cursor.execute(
         "SELECT * FROM books WHERE genre ILIKE %s",
         (genre,))
+    
     books = cursor.fetchall()
     if books is None:
         print("Book not found")
@@ -155,6 +164,7 @@ def view_books_menu():
     Allows the user to choose whether to display all books,
     available books or borrowed books.
     """
+    
     print("\n --- View Books ---")
     print("1.View all books")
     print("2.View Available Books")
@@ -170,7 +180,9 @@ def view_all_books():
     """
     connection = connect_database()
     cursor = connection.cursor()
+
     cursor.execute("SELECT * FROM books")
+
     books = cursor.fetchall()
     print("--- All Books ---")
     for id, title, author, genre, year, available in books:
@@ -188,7 +200,9 @@ def view_available_books():
     """
     connection = connect_database()
     cursor = connection.cursor()
+
     cursor.execute("SELECT * FROM  books WHERE available = True")
+
     books = cursor.fetchall()
     print("\n --- Available Books ---")
     for id, title, author, genre, year, available in books:
@@ -206,7 +220,9 @@ def view_borrowed_books():
     """
     connection = connect_database()
     cursor = connection.cursor()
+
     cursor.execute("SELECT * FROM books WHERE available = False")
+
     books = cursor.fetchall()
     print("\n --- Borrowed Books ---")
     for id, title, author, genre, year, available in books:
@@ -245,38 +261,40 @@ def add_book():
     record into the PostgreSQL database if no duplicate
     exists.
     """
-    title = user_input("Enter Book Title:  (press X to cancel)")
+    title = user_input("Enter Book Title (press X to cancel); ")
     if title is None:
         return  
-    author = user_input("Enter Author:  (press X to cancel)")
+    author = user_input("Enter Author (press X to cancel): ")
     if author is None:
         return
-    genre = user_input("Enter Genre:  (press X to cancel)")
+    genre = user_input("Enter Genre (press X to cancel): ")
     if genre is None:
         return
-    year = get_int_value("Enter Year: ")
+    year = get_int_value("Enter Year (press X to cancel): ")
     if year is None:
         return 
     
     connection = connect_database()
     cursor = connection.cursor()
+
     cursor.execute("SELECT * FROM books" \
     " WHERE title ILIKE %s" \
     " AND author ILIKE %s",
      (title, author))
+    
     book = cursor.fetchone()
     if book:
         print("Book already exists!")
+
         cursor.close()
         connection.close()
         return
     
-    
     cursor.execute("INSERT INTO books " \
-        " (title, author, genre, year, available)" \
-        " VALUES" \
-        " (%s, %s, %s, %s, %s)",
-         (title, author, genre, year, True))
+    " (title, author, genre, year, available)" \
+    " VALUES" \
+    " (%s, %s, %s, %s, %s)",
+     (title, author, genre, year, True))
     connection.commit()
     print("Book has been successfully added!")
     
@@ -293,7 +311,7 @@ def borrow_book():
     and is currently available, requests user confirmation
     and updates the database to mark the book as borrowed.
     """
-    title = user_input("Enter Book Title:    (press X to cancel)")
+    title = user_input("Enter Book Title (press X to cancel): ")
     if title is None:
         return
     
@@ -303,6 +321,7 @@ def borrow_book():
     cursor.execute("SELECT * FROM books" \
     " WHERE title ILIKE %s", 
      (title,))
+    
     book = cursor.fetchone()
     if book is None:
         print("book does not exist!")
@@ -326,6 +345,7 @@ def borrow_book():
     cursor.execute("UPDATE books SET available = False" \
     " WHERE id = %s",
      (id, ))
+
     connection.commit()
     print("Book Borrowed Successfully!")
     
@@ -337,7 +357,7 @@ def return_book():
     and is currently borrowed, requests user confirmation
     and updates the database to mark the book as available.
     """
-    title = user_input("Enter Book Title:    (press X to cancel)")
+    title = user_input("Enter Book Title (press X to cancel): ")
     if title is None:
         return
     
@@ -347,9 +367,11 @@ def return_book():
     cursor.execute("SELECT * FROM books " \
     " WHERE title ILIKE %s",
      (title,))
+    
     book = cursor.fetchone()
     if book is None:
         print("Book does not exist!")
+
         cursor.close()
         connection.close()
         return
@@ -398,6 +420,7 @@ def delete_book():
     cursor.execute("SELECT * FROM books" \
     " WHERE title ILIKE %s",
      (title,))
+    
     book = cursor.fetchone()
     if book is None:
         print("Book does not exist!")
@@ -408,6 +431,7 @@ def delete_book():
     confirm = get_confirmation("Please Confirm (Y/N): ")
     if not confirm:
         print("Cancelling...")
+
         cursor.close()
         connection.close()
         return 

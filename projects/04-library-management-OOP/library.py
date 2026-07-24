@@ -2,11 +2,42 @@
 from book import Book
 from validations import user_input, get_int_value, get_confirmation
 
+"""
+Library Class
+
+This module contains the Library class, which manages a collection
+of Book objects.
+
+The Library class is responsible for adding, searching, borrowing,
+returning, deleting and displaying books, as well as generating
+library statistics.
+"""
+
 class Library:
+    """
+    Represents a library containing multiple Book objects.
+
+    The Library class manages all operations performed on
+    the collection of books.
+    """
+
     def __init__(self):
+        """
+        Initialise an empty library.
+
+        Creates a list used to store Book objects.
+        """
+
         self.books = []
     
     def add_book(self):
+        """
+        Add a new book to the library.
+
+        Collects book details from the user, creates a Book object,
+        and stores it within the library collection.
+        """
+
         title = user_input("Please enter Title: (press X to cancel): ")
         if title is None:
             return
@@ -38,22 +69,47 @@ class Library:
         
 
     def view_all_books(self):
+        """
+        Display every book in the library.
+
+        Iterates through the collection and displays each
+        Book object's information.
+        """
+
         for book in self.books:
             book.display_book()
 
     def view_available_books(self):
+        """
+        Display all available books.
+
+        Shows every book that is currently marked as available.
+        """
+
         print("\n--- Available Books ---")
         for book in self.books: 
             if book.available:
                 book.display_book()
     
     def view_borrowed_books(self):
+        """
+        Display all borrowed books.
+
+        Shows every book that is currently unavailable.
+        """
+
         print("\n--- Borrowed Books ---")
         for book in self.books():
             if not book.available:
                 book.display_book()
 
     def search_by_title(self):
+        """
+        Search for books by title.
+
+        Displays all books written by the specified title.
+        """
+
         title = user_input("Please enter Title: (press X to cancel): ")
         if title is None:
             return
@@ -66,7 +122,13 @@ class Library:
         print("Book does not exist!")
 
     def search_by_author(self):
-        author = user_input("Please Enter Author: (press X to cancel): ")
+        """
+        Search for books by author.
+
+        Displays all books written by the specified author.
+        """
+
+        author = user_input("Please Enter Author (press X to cancel): ")
         if author is None:
             return
         
@@ -81,7 +143,13 @@ class Library:
             print("Book does not exist!")
 
     def search_by_genre(self):
-        genre = user_input("Please Enter Genre: (press X to cancel): ")
+        """
+        Search for books by genre.
+
+        Displays all books that belong to the specified genre.
+        """
+
+        genre = user_input("Please Enter Genre (press X to cancel): ")
         if genre is None:
             return
         
@@ -96,10 +164,16 @@ class Library:
             
 
     def borrow_book(self):
-        title = user_input("Please enter Title: (press X to cancel): ")
+        """
+        Borrow a book.
+
+        Marks a selected available book as borrowed if it exists.
+        """
+
+        title = user_input("Please enter Title (press X to cancel): ")
         if title is None:
             return
-        author = user_input("Please enter Author: (press X to cancel): ")
+        author = user_input("Please enter Author (press X to cancel): ")
         if author is None:
             return 
         
@@ -123,10 +197,16 @@ class Library:
                 print("Book does not exist!")
                     
     def return_book(self):
-        title = user_input("Please enter Title: (press X to cancel): ")
+        """
+        Return a borrowed book.
+
+        Marks a selected borrowed book as available again.
+        """
+
+        title = user_input("Please enter Title (press X to cancel): ")
         if title is None:
             return
-        author = user_input("Please enter Author: (press X to cancel): ")
+        author = user_input("Please enter Author (press X to cancel): ")
         if author is None:
             return
 
@@ -152,10 +232,16 @@ class Library:
 
 
     def delete_book(self):
-        title = user_input("Please enter Title: (press X to cancel): ")
+        """
+        Delete a book from the library.
+
+        Removes a selected book from the library collection.
+        """
+
+        title = user_input("Please enter Title (press X to cancel): ")
         if title is None:
             return
-        author = user_input("Please enter Author: (press X to cancel): ")
+        author = user_input("Please enter Author (press X to cancel): ")
         if author is None:
             return
         
@@ -181,6 +267,13 @@ class Library:
     #Statistics Operations 
 
     def overall_statistics(self):
+        """
+        Display overall library statistics.
+
+        Shows the total number of books, available books
+        and borrowed books.
+        """
+
         total = len(self.books)
         available = 0 
         borrowed = 0 
@@ -195,6 +288,11 @@ class Library:
         print(f"Borrowed Books: {borrowed}")
         
     def books_by_genre(self):
+        """
+        Display the number of books in each genre.
+
+        Counts and displays books grouped by genre.
+        """
         genre_count ={}
         for book in self.books:
             genre = book.genre
@@ -206,6 +304,12 @@ class Library:
                 print(f"{genre}: {count}")
         
     def books_by_author(self):
+        """
+        Display the number of books written by each author.
+
+        Counts and displays books grouped by author.
+        """
+        
         author_count = {}
         for book in self.books:
             author = book.author 

@@ -29,13 +29,26 @@ def user_menu():
     print("7.Exit")
 
 def view_books_menu():
+    """
+    Displays the View Books menu.
+
+    Allows the user to choose whether to display all books,
+    available books or borrowed books.
+    """
     print("\n --- View Books ---")
-    print("1.View All Books")
-    print("2.View Avaialable Books")
+    print("1.View all books")
+    print("2.View Available Books")
     print("3.View Borrowed Books")
     print("4.Exit")
 
 def view_books():
+    """
+    Runs the View Books menu.
+    
+    Displays the View Books menu, processes the user's
+    selection and executes the requested viewing operation
+    until the user exits the menu.
+    """
     while True:
         view_books_menu()
         choice = get_menu_choice("Select Option (1/2/3/4): ")
@@ -50,6 +63,12 @@ def view_books():
             break 
 
 def search_books_menu():
+    """
+    Displays the search menu.
+    
+    Allows the user to choose whether to search
+    books by title, author, or genre.
+    """
     print("\n --- Search Books ---")
     print("1.Search By Title")
     print("2.Search by Author")
@@ -57,6 +76,14 @@ def search_books_menu():
     print("4.Exit")
 
 def search_books():
+    """
+    Runs the Search Books menu.
+    
+    Displays the search menu, processes the user's menu
+    selection and executes the requested search operation
+    until the user chooses to exit.
+    """
+
     while True:
         search_books_menu()
         choice = get_menu_choice("Select Option (1/2/3/4): ")
@@ -72,6 +99,13 @@ def search_books():
 
 
 def statistics_menu():
+    """
+    Displays the library statistics menu.
+    
+    Allows the user to choose which statistics
+    report they would like to view.
+    """
+
     print("\n --- Statistics ---")
     print("1.Overall Statistics")
     print("2.Books by Genre")
@@ -79,6 +113,13 @@ def statistics_menu():
     print("4.Exit")
 
 def search_statistics():
+    """
+    Runs the Library Statistics menu.
+    
+    Processes the user's menu selection and displays
+    the requested statistical report.
+    """
+
     while True:
         statistics_menu()
         choice = get_menu_choice("Please Enter option (1/2/3/4): ")
