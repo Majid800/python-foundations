@@ -17,7 +17,7 @@ def login_save():
     if username_entry.get() == "":
         print("please Enter username")
 
-    if radio_entry == "":
+    elif radio_entry.get() == "":
         print("Please Select Role")
 
 
