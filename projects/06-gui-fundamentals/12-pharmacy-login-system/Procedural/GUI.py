@@ -191,7 +191,7 @@ show_password_button.bind('<ButtonRelease-1>', hide_password)
 
 
 
-#display
+#widgets
 pms_label.grid(row = 0, column = 0)
 employee_login_label.grid(row = 1, column = 0, columnspan = 2, pady = 5)
 username_label.grid(row = 2, column = 0, padx = 5) 
