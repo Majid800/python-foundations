@@ -2,7 +2,7 @@ import psycopg
 
 def connect_database():
     connection = psycopg.connect(
-             dbname = "pharmacy.db",
+             dbname = "pharmacy_system",
              user = "postgres",
              password = "King1978!", 
              host = "localhost",
@@ -15,7 +15,7 @@ def check_login(username,password):
     connection, cursor  = connect_database()
 
     cursor.execute("SELECT username, password" \
-    " FROM employees" \
+    " FROM users" \
     " WHERE username = %s",
      (username,))
 

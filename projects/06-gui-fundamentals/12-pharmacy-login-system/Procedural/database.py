@@ -2,7 +2,7 @@ import psycopg
 
 def connect_database():
     connection = psycopg.connect(
-             dbname = "pharmacy.db",
+             dbname = "login_learning",
              user = "postgres",
              password = "King1978!", 
              host = "localhost",
