@@ -2,9 +2,11 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
 import sys
 from library_sidebar import MySideBar
 
-app = QApplication(sys.argv)
+if __name__ == "__main__":
 
-window = MySideBar()
-window.show()
+    app = QApplication(sys.argv)
 
-app.exec()
+    window = MySideBar()
+    window.show()
+
+    app.exec()

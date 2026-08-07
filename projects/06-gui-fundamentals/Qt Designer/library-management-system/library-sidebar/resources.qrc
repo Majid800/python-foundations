@@ -1,0 +1,27 @@
+<RCC>
+  <qresource>
+    <file>icons/books_library_icon.svg</file>
+    <file>icons/check_icon.svg</file>
+    <file>icons/members_icon.svg</file>
+    <file>icons/north_east_icon.svg</file>
+    <file>icons/account_icon.svg</file>
+    <file>icons/books_icon.svg</file>
+    <file>icons/green_account_icon.svg</file>
+    <file>icons/green_cycle_icon.svg</file>
+    <file>icons/green_home_icon.svg</file>
+    <file>icons/green_library_books.svg</file>
+    <file>icons/green_menubar_icon.svg</file>
+    <file>icons/green_power_settings_icon.svg</file>
+    <file>icons/green_search.svg</file>
+    <file>icons/green_settings_icon.svg</file>
+    <file>icons/green_stats_icon.svg</file>
+    <file>icons/green_user_icon.svg</file>
+    <file>icons/home_icon.svg</file>
+    <file>icons/menu_icon.svg</file>
+    <file>icons/power_settings_icon.svg</file>
+    <file>icons/return_borrow_icon.svg</file>
+    <file>icons/search_icon.svg</file>
+    <file>icons/settings_icon.svg</file>
+    <file>icons/stats_icon.svg</file>
+  </qresource>
+</RCC>
